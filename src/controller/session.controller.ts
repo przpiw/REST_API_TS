@@ -3,7 +3,7 @@ import config from 'config'
 import { validatePassword } from "../service/user.service";
 import { createSession, findSessions, updateSession } from "../service/session.service";
 import { signJwt } from "../utils/jwt.utils";
-
+import { JwtKeyType } from "../types/jwtKeyType";
 export async function createUserSessionHandler(req:Request,res:Response) {
   
   //Validate the user password
@@ -25,7 +25,7 @@ export async function createUserSessionHandler(req:Request,res:Response) {
   // create a refresh token
   const refreshToken = signJwt(
     { ...user, session: session._id },
-    "refreshTokenPrivateKey",
+    "refreshTokenPrivateKey" as JwtKeyType,
     { expiresIn: config.get("refreshTokenTtl") } // 15 minutes
   );
 

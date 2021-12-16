@@ -3,7 +3,7 @@ import Product,{
   ProductDocument,
   ProductInput,
 } from "../models/product.model";
-export async function createProduct(input: DocumentDefinition<Omit<ProductDocument,'createdAt' | 'updatedAt'>>){
+export async function createProduct(input: DocumentDefinition<Omit<ProductDocument,'createdAt' | "productId" | 'updatedAt'>>){
 return Product.create(input)
 }
 

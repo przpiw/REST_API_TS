@@ -10,11 +10,11 @@ export async function createSession(userId:any, userAgent:string){
   return session.toJSON();
 }
 import { findUser } from './user.service';
+import { JwtKeyType } from '../types/jwtKeyType';
 
 export async function findSessions(query:FilterQuery<SessionDocument>){
   return Session.find(query).lean();
 }
-
 
 
 export async function updateSession(
@@ -24,13 +24,12 @@ export async function updateSession(
   return Session.updateOne(query, update);
 }
 
-
 export async function reIssueAccessToken({
   refreshToken,
 }: {
   refreshToken: string;
 }) {
-  const { decoded } = verifyJwt(refreshToken, "refreshTokenPublicKey");
+  const { decoded } = verifyJwt(refreshToken, "refreshTokenPublicKey" as JwtKeyType);
 
   if (!decoded || !get(decoded, "session")) return false;
 
