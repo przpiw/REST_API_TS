@@ -16,12 +16,12 @@ export async function createUser(input:DocumentDefinition<Omit<UserDocument,'cre
 export async function validatePassword({email,password}:{email:string,password:string}){
   const user = await User.findOne({email})
   if(!user)
-  return false
+    return false
 
   const isValid = await user.comparePassword(password)
-
+  
   if(!isValid)
-  return false
+    return false
 
   return omit(user.toJSON(),"password")
 }
