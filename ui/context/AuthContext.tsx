@@ -28,23 +28,23 @@ export const createSessionSchema = object({
 
 type CreateSessionInput = TypeOf<typeof createSessionSchema>;
 export const AuthProvider:React.FC = ( {children} ) =>{
-  const [user, setUser] = useState('John')
   const [error, setError] = useState(null)
+  const [loggedIn,setLoggedIn] = useState()
+  const [user,setUser] = useState('')
   const router:NextRouter = useRouter();
  
   //Login user
   const login = async ( values:CreateSessionInput ) => {
     try{
       const {status,data} = await axios.post<AxiosResponseHeaders>(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,values,{withCredentials:true})
-      if(status===200){
+      if(status===200){ 
+       
         router.push('/')
       }
     }
     catch(e){
       setError(error)
     }
-  
-    
   }
   //Logout user
   const logout = async () => {
@@ -52,21 +52,24 @@ export const AuthProvider:React.FC = ( {children} ) =>{
     .delete<AxiosResponseHeaders>(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`, {
       withCredentials: true,
     })
-    router.push('/')
+    router.push('/auth/login')
   }
 
-  const isLoggedIn = async(user:string)=>{
+  const isLoggedIn = async () =>{
+    try{
     const {status} = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/me`,{
       withCredentials:true
     })
-   
     if(status!==200){
-      router.push('/auth/login')
+      console.error('Not authenitcated')
+    }
+    }catch(e){
+     console.error('Ex Not authenicated')
     }
   }
 
   return ( 
-      <AuthContext.Provider value={{logout,user,isLoggedIn,login}}>
+      <AuthContext.Provider value={{logout,isLoggedIn,login}}>
       {children}
       </AuthContext.Provider>
   )
