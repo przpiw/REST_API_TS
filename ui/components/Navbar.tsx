@@ -26,12 +26,13 @@ const Navbar:React.FC  = () => {
   const auth:any = useAuth();
   const {loading,error,user,mutate} = useUser();
   if(loading)
-  return <><h3>loading..</h3></>
-
-  if(error){
-    // redirect to error page send error
-    return <><h1>{(!loading && error.message) && error}</h1></>
-  }
+    return <div><h3>loading..</h3></div>
+if(error)
+console.log(error)
+  // if(error){
+  //   // redirect to error page send error
+  //   return <><h1>{(!loading && error.message) && error}</h1></>
+  // }
   const handleLogout = async () =>{
     const req = await auth.logout()
     if(!req)
@@ -43,7 +44,7 @@ const Navbar:React.FC  = () => {
   
   
   return <div>
-    welcome {user?.name}<button onClick={()=>handleLogout()}>Logout</button></div>
+   {user?.name}<button onClick={()=>handleLogout()}>Logout</button></div>
 };
 
 

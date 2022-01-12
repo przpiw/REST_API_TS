@@ -3,7 +3,6 @@ import { CreateUserInput } from '../schema/user.schema'
 import { createUser } from '../service/user.service'
 import logger from "../utils/logger"
 import {omit} from 'lodash'
-import { findSessions,updateSession } from '../service/session.service'
 
 export async function createUserHandler(req:Request<{},{},CreateUserInput["body"]>,res: Response){
   try{
